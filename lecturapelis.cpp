@@ -35,7 +35,7 @@ vector<string> dividirLineaCSV(const string &linea, char delimitador)
     return campos;
 }
 
-int main()
+int leerpelis()
 {
     ifstream archivo(Archivo);
 
