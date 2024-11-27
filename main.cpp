@@ -8,8 +8,10 @@ using namespace std;
 
 int main()
 {
-    cout << "Hola mundo, emi es una buena persona" << endl;
-    cout << "Hola mundo, Emi es un pendejo" << endl;
-    
+    TablaHash tabla;
+    ArbolBinarioBusqueda arbol;
+    leerpelis(tabla, arbol);
+    menu(tabla, arbol);
+
     return 0;
 }

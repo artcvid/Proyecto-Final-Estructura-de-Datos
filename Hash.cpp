@@ -202,14 +202,6 @@ void menu(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
     } while (opcion != 3);
 }
 
-int main()
-{
-    TablaHash tabla;
-    ArbolBinarioBusqueda arbol;
-    leerpelis(tabla, arbol);
-    menu(tabla, arbol);
 
-    return 0;
-}
 
 #endif // HASHTABLE_H
