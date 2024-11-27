@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Hash.cpp"
+#include "Menu.cpp"
 #include <sstream>
 #include <fstream>
 #include <vector>
@@ -8,10 +9,6 @@ using namespace std;
 
 int main()
 {
-    TablaHash tabla;
-    ArbolBinarioBusqueda arbol;
-    leerpelis(tabla, arbol);
-    menu(tabla, arbol);
-
+    menu();
     return 0;
 }
