@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include "Arbol.cpp"
 #define Archivo "movies_metadata.csv"
 using namespace std;
 
@@ -101,9 +102,9 @@ vector<string> dividirLineaCSV(const string &linea, char delimitador)
     return campos;
 }
 
-int leerpelis()
+int leerpelis(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
 {
-    TablaHash tabla;
+    //    TablaHash tabla;
     ifstream archivo(Archivo);
 
     if (!archivo.is_open())
@@ -124,13 +125,13 @@ int leerpelis()
         // Verificar que hay suficientes campos para evitar accesos inválidos
         if (campos.size() < 24)
         {
-            cerr << "Error: línea con formato incorrecto." << endl;
+        //    cerr << "Error: línea con formato incorrecto." << endl;
             i++;
             continue;
         }
         else if (campos[0] != "False")
         {
-            cerr << "Error: línea con formato incorrecto." << endl;
+           // cerr << "Error: línea con formato incorrecto." << endl;
             i++;
             continue;
         }
@@ -138,32 +139,86 @@ int leerpelis()
         else
         {
             // Extraer los campos deseados
-            string idi = campos[5];       // Columna 6: id
-            int id = stoi(idi);                 i++;
-            string imdb_id = campos[6];             // Columna 7: imdb_id
-            string original_title = campos[8];      // Columna 10: original_title
-            string overview = campos[9];            // Columna 11: overview
-            string vote_average = campos[22];       // Columna 23: vote_average
-            float vote_averag = stof(vote_average); // Cambiado a float para vote_average
+            string idi = campos[5]; // Columna 6: id
+            int id = stoi(idi);
+            i++;
+            string imdb_id = campos[6];        // Columna 7: imdb_id
+            string original_title = campos[8]; // Columna 10: original_title
+            string overview = campos[9];       // Columna 11: overview
+            string vote_average = campos[22];  // Columna 23: vote_average
+            float vote_averag = stof(vote_average);
 
             // Insertar los datos en el arreglo de estructuras.
             Pelicula pelicula(id, imdb_id, original_title, overview, vote_averag);
             tabla.insertar(id, pelicula);
+            arbol.insertarNodo(id, original_title);
         }
     }
-
-    Pelicula *peli = tabla.buscar(461257);
-    cout << peli->original_title << endl;
-
     archivo.close();
     return 0;
 }
 
+// --- Menú de Usuario ---
+void menu(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
+{
+    int opcion;
+
+    do
+    {
+        cout << "\n--- Menú ---\n";
+        cout << "1. Buscar película por ID\n";
+        cout << "2. Buscar película por título\n";
+        cout << "3. Salir\n";
+        cout << "Seleccione una opción: ";
+        cin >> opcion;
+
+        if (opcion == 1)
+        {
+            int id;
+            cout << "Ingrese el ID de la película: ";
+            cin >> id;
+
+            Pelicula *p = tabla.buscar(id);
+            if (p)
+            {
+                cout << "Título: " << p->original_title << "\n";
+                cout << "Calificación: " << p->vote_average << "\n";
+                cout << "Enlace IMDb: https://www.imdb.com/title/" << p->imdb_id << "/\n";
+            }
+            else
+            {
+                cout << "Película no encontrada.\n";
+            }
+        }
+        // Buscar por titulo
+        else if (opcion == 2)
+        {
+            cin.ignore();
+            string titulo;
+            cout << "Ingrese el título de la película: ";
+            getline(cin, titulo);
+            int p = arbol.buscarNodo(titulo);
+            Pelicula *m = tabla.buscar(p);
+            if (m)
+            {
+                cout << "Título: " << m->original_title << "\n";
+                cout << "Calificación: " << m->vote_average << "\n";
+                cout << "Enlace IMDb: https://www.imdb.com/title/" << m->imdb_id << "/\n";
+            }
+            else
+            {
+                cout << "Película no encontrada.\n";
+            }
+        }
+    } while (opcion != 3);
+}
+
 int main()
 {
-    cout << "Hola mundo, emi es una buena persona" << endl;
-    cout << "Hola mundo, Emi es un pendejo" << endl;
-    leerpelis();
+    TablaHash tabla;
+    ArbolBinarioBusqueda arbol;
+    leerpelis(tabla, arbol);
+    menu(tabla, arbol);
 
     return 0;
 }
