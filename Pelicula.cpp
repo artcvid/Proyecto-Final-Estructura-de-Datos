@@ -9,7 +9,7 @@ struct Pelicula
 {
     int id;
     string imdb_id;
-    string original_title; 
+    string original_title;
     string overview;
     float vote_average;
 

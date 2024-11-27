@@ -13,35 +13,40 @@
 #define Archivo "movies_metadata.csv"
 using namespace std;
 
+const int TABLE_SIZE = 100000;
+
 // --- Tabla Hash con Doble Hashing ---
 class TablaHash
 {
 private:
-    static const int TABLE_SIZE = 100000;
     Pelicula *tabla[TABLE_SIZE];
-    bool ocupada[TABLE_SIZE] = {false}; // Rastrea posiciones ocupadas
+    // bool ocupada[TABLE_SIZE] = {false}; // Rastrea posiciones ocupadas
 
-    int hash1(int id) const { return id % TABLE_SIZE; }
-    int hash2(int id) const { return 1 + (id % (TABLE_SIZE - 1)); }
+    int hash1(int key) const { return key % TABLE_SIZE; }
+    int hash2(int key) const { return 7 - (key % 7); }
 
 public:
+    // Inicializador
     TablaHash()
     {
-        fill(tabla, tabla + TABLE_SIZE, nullptr);
+        for (int i = 0; i < TABLE_SIZE; i++)
+        {
+            tabla[i] = nullptr;
+        }
     }
 
-    void insertar(int id, const Pelicula &pelicula)
+    void insertar(int key, const Pelicula &pelicula)
     {
-        int indice = hash1(id);
-        int step = hash2(id);
+        int probe = hash1(key);
+        int step = hash2(key);
 
-        while (ocupada[indice])
+        while (tabla[probe] != nullptr)
         {
-            indice = (indice + step) % TABLE_SIZE;
+            probe = (probe + step) % TABLE_SIZE;
         }
 
-        tabla[indice] = new Pelicula(pelicula);
-        ocupada[indice] = true;
+        tabla[probe] = new Pelicula(pelicula);
+        // ocupada[probe] = true;
     }
 
     Pelicula *buscar(int id) const
@@ -49,7 +54,7 @@ public:
         int indice = hash1(id);
         int step = hash2(id);
 
-        while (ocupada[indice])
+        while (1)
         {
             if (tabla[indice] && tabla[indice]->id == id)
             {
