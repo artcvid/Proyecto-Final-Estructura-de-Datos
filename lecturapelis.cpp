@@ -76,7 +76,16 @@ int leerpelis()
         cout << "Calificación promedio: " << vote_average << endl;
         cout << "-------------------------" << endl;
     }
+    
 
     archivo.close();
+    return 0;
+}
+int main()
+{
+    cout << "Hola mundo, emi es una buena persona" << endl;
+    cout << "Hola mundo, Emi es un pendejo" << endl;
+    leerpelis();
+
     return 0;
 }
