@@ -114,13 +114,13 @@ int leerpelis(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
         // Verificar que hay suficientes campos para evitar accesos inválidos
         if (campos.size() < 24)
         {
-        //    cerr << "Error: línea con formato incorrecto." << endl;
+            //    cerr << "Error: línea con formato incorrecto." << endl;
             i++;
             continue;
         }
         else if (campos[0] != "False")
         {
-           // cerr << "Error: línea con formato incorrecto." << endl;
+            // cerr << "Error: línea con formato incorrecto." << endl;
             i++;
             continue;
         }
@@ -201,7 +201,5 @@ void menu(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
         }
     } while (opcion != 3);
 }
-
-
 
 #endif // HASHTABLE_H
