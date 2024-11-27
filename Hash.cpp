@@ -9,21 +9,10 @@
 #include <vector>
 #include <string>
 #include "Arbol.cpp"
+#include "Pelicula.cpp"
 #define Archivo "movies_metadata.csv"
 using namespace std;
 
-// --- Estructura Pelicula ---
-struct Pelicula
-{
-    int id;
-    string imdb_id;
-    string original_title;
-    string overview;
-    float vote_average;
-
-    Pelicula(int _id, string _imdb, string _title, string _overview, float _vote)
-        : id(_id), imdb_id(_imdb), original_title(_title), overview(_overview), vote_average(_vote) {}
-};
 // --- Tabla Hash con Doble Hashing ---
 class TablaHash
 {
