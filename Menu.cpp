@@ -20,7 +20,6 @@ void limpiarPantalla()
 void esperarTecla()
 {
     cout << "\nPresione ENTER para continuar...";
-    cin.ignore(); // Limpiar buffer previo
     cin.get();    // Esperar entrada del usuario
 }
 
