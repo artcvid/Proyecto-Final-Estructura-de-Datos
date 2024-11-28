@@ -21,9 +21,9 @@ void limpiarPantalla()
 // --- Función para esperar una tecla ---
 void esperarTecla()
 {
-    cout << "\nPresione ENTER para continuar...";
-    cin.get(); // Esperar entrada del usuario
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "\nPresione ENTER para continuar...";
+    cin.get();
 }
 
 // --- Menú de Usuario ---
@@ -33,18 +33,19 @@ void menu()
     TablaHash tabla;
     ArbolBinarioBusqueda arbol;
 
-    leerpelis(tabla, arbol); // Cargar datos desde el archivo
+    leerPelicula(tabla, arbol); // Cargar datos desde el archivo
 
     while (true)
     {
-        limpiarPantalla(); // Limpia la pantalla antes de mostrar el menú
-        cout << "\n--- Menu ---\n";
+        limpiarPantalla();
+        cout << "--- Menu ---\n";
         cout << "1. Buscar pelicula por ID\n";
         cout << "2. Buscar pelicula por titulo\n";
-        cout << "3. Buscar por Indice de la tabla Hash: ";
+        cout << "3. Buscar por Indice de la tabla Hash: \n";
         cout << "4. Salir\n";
         cout << "Seleccione una opcion: ";
         cin >> opcion;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (opcion)
         {
@@ -57,41 +58,27 @@ void menu()
 
             Pelicula *pelicula = tabla.buscar(id);
             if (pelicula)
-            {
-                cout << "Titulo: " << pelicula->original_title << "\n";
-                cout << "Calificacion: " << pelicula->vote_average << "\n";
-                cout << "Enlace IMDb: https://www.imdb.com/title/" << pelicula->imdb_id << "/\n";
-                cout << "Overview: " << pelicula->overview << endl;
-                esperarTecla(); // Pausa antes de limpiar
-            }
+                pelicula->imprimir();
             else
-            {
                 cout << "Pelicula no encontrada.\n";
-                esperarTecla(); // Pausa antes de limpiar
-            }
-            break;
+
+            esperarTecla();
         }
         case 2:
         {
-             limpiarPantalla();
-            cin.ignore(); // Limpiar buffer de entrada
+            limpiarPantalla();
+            // cin.ignore(); // Limpiar buffer de entrada
             string titulo;
             cout << "Ingrese el titulo de la pelicula: ";
             getline(cin, titulo);
-
             int p = arbol.buscarNodo(titulo);
-            Pelicula *m = tabla.buscar(p);
-            if (m)
-            {
-                cout << "Titulo: " << m->original_title << "\n";
-                cout << "Calificacion: " << m->vote_average << "\n";
-                cout << "Enlace IMDb: https://www.imdb.com/title/" << m->imdb_id << "/\n";
-                cout << "Overview: " << m->overview << endl;
-            }
+            Pelicula *pelicula = tabla.buscar(p);
+
+            if (pelicula)
+                pelicula->imprimir();
             else
-            {
                 cout << "Pelicula no encontrada.\n";
-            }
+
             esperarTecla(); // Pausa antes de limpiar
             break;
         }
@@ -103,18 +90,10 @@ void menu()
 
             Pelicula *pelicula = tabla.buscar(indice);
             if (pelicula)
-            {
-                cout << "Titulo: " << pelicula->original_title << "\n";
-                cout << "Calificacion: " << pelicula->vote_average << "\n";
-                cout << "Enlace IMDb: https://www.imdb.com/title/" << pelicula->imdb_id << "/\n";
-                cout << "Overview: " << pelicula->overview << endl;
-                esperarTecla(); // Pausa antes de limpiar
-            }
+                pelicula->imprimir();
             else
-            {
                 cout << "Pelicula no encontrada.\n";
-                esperarTecla(); // Pausa antes de limpiar
-            }
+
             break;
         }
         case 4:

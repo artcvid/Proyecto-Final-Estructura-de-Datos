@@ -20,8 +20,6 @@ class TablaHash
 {
 private:
     Pelicula *tabla[TABLE_SIZE];
-    // bool ocupada[TABLE_SIZE] = {false}; // Rastrea posiciones ocupadas
-
     int hash1(int key) const { return key % TABLE_SIZE; }
     int hash2(int key) const { return 7 - (key % 7); }
 
@@ -97,9 +95,8 @@ vector<string> dividirLineaCSV(const string &linea, char delimitador)
     return campos;
 }
 
-int leerpelis(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
+int leerPelicula(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
 {
-    //    TablaHash tabla;
     ifstream archivo(Archivo);
 
     if (!archivo.is_open())
@@ -168,6 +165,6 @@ int leerpelis(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
     // cout << j << endl;
     archivo.close();
     return 0;
-}
+};
 
 #endif // HASHTABLE_H
