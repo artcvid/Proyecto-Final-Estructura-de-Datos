@@ -1,5 +1,7 @@
 #include <iostream>
 #include "Hash.cpp"
+#include <limits>
+#include <ios>
 
 using namespace std;
 
@@ -20,7 +22,8 @@ void limpiarPantalla()
 void esperarTecla()
 {
     cout << "\nPresione ENTER para continuar...";
-    cin.get();    // Esperar entrada del usuario
+    cin.get(); // Esperar entrada del usuario
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 // --- Menú de Usuario ---
@@ -38,7 +41,8 @@ void menu()
         cout << "\n--- Menu ---\n";
         cout << "1. Buscar pelicula por ID\n";
         cout << "2. Buscar pelicula por titulo\n";
-        cout << "3. Salir\n";
+        cout << "3. Buscar por Indice de la tabla Hash: ";
+        cout << "4. Salir\n";
         cout << "Seleccione una opcion: ";
         cin >> opcion;
 
@@ -57,18 +61,19 @@ void menu()
                 cout << "Titulo: " << pelicula->original_title << "\n";
                 cout << "Calificacion: " << pelicula->vote_average << "\n";
                 cout << "Enlace IMDb: https://www.imdb.com/title/" << pelicula->imdb_id << "/\n";
+                cout << "Overview: " << pelicula->overview << endl;
+                esperarTecla(); // Pausa antes de limpiar
             }
             else
             {
                 cout << "Pelicula no encontrada.\n";
+                esperarTecla(); // Pausa antes de limpiar
             }
-            esperarTecla(); // Pausa antes de limpiar
             break;
         }
-
         case 2:
         {
-            limpiarPantalla();
+             limpiarPantalla();
             cin.ignore(); // Limpiar buffer de entrada
             string titulo;
             cout << "Ingrese el titulo de la pelicula: ";
@@ -81,6 +86,7 @@ void menu()
                 cout << "Titulo: " << m->original_title << "\n";
                 cout << "Calificacion: " << m->vote_average << "\n";
                 cout << "Enlace IMDb: https://www.imdb.com/title/" << m->imdb_id << "/\n";
+                cout << "Overview: " << m->overview << endl;
             }
             else
             {
@@ -89,17 +95,43 @@ void menu()
             esperarTecla(); // Pausa antes de limpiar
             break;
         }
-
         case 3:
+        {
+            int indice;
+            cout << "Digite el indice de la pelicula: " << endl;
+            cin >> indice;
+
+            Pelicula *pelicula = tabla.buscar(indice);
+            if (pelicula)
+            {
+                cout << "Titulo: " << pelicula->original_title << "\n";
+                cout << "Calificacion: " << pelicula->vote_average << "\n";
+                cout << "Enlace IMDb: https://www.imdb.com/title/" << pelicula->imdb_id << "/\n";
+                cout << "Overview: " << pelicula->overview << endl;
+                esperarTecla(); // Pausa antes de limpiar
+            }
+            else
+            {
+                cout << "Pelicula no encontrada.\n";
+                esperarTecla(); // Pausa antes de limpiar
+            }
+            break;
+        }
+        case 4:
+        {
+
             limpiarPantalla();
             cout << "Saliendo del programa...\n";
             return; // Salir del menú
-
+            break;
+        }
         default:
+        {
             limpiarPantalla();
             cout << "Opcion no valida. Intente nuevamente.\n";
             esperarTecla(); // Pausa antes de limpiar
             break;
+        }
         }
     }
 }

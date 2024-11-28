@@ -73,6 +73,7 @@ vector<string> dividirLineaCSV(const string &linea, char delimitador)
     string campo;
     bool entreComillas = false;
 
+    // range-based for loop is a C++11 extension [-Wc++11-extensions]
     for (char c : linea)
     {
         if (c == '"')
@@ -111,33 +112,40 @@ int leerpelis(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
     string concat;
 
     getline(archivo, linea);
-    getline(archivo, concat);
+    concat = linea;
 
     int i = 1;
-    while (getline(archivo, concat))
+    // int j = 0;
+    while (getline(archivo, linea))
     {
-        if (concat[0] != 'F')
+        vector<string> campos;
+        if (linea[0] != 'F' || linea[0] == ' ' && i > 2)
         {
-            linea.append(concat);
+            concat.append(linea);
+            campos = dividirLineaCSV(concat, ',');
+            // concat = linea;
         }
-        vector<string> campos = dividirLineaCSV(linea, ',');
-        getline(archivo, linea);
+        else
+        {
+            concat = linea;
+            campos = dividirLineaCSV(concat, ',');
+        }
+
         // stringstream stream(linea);
 
         // Verificar que hay suficientes campos para evitar accesos inválidos
         if (campos.size() < 24)
         {
-            //    cerr << "Error: línea con formato incorrecto." << endl;
-            i++;
+            // cerr << "Error: línea con formato incorrecto." << "   " << i << endl;
+            // j++; // lineas que no sirven
             continue;
         }
         else if (campos[0] != "False")
         {
-            // cerr << "Error: línea con formato incorrecto." << endl;
-            i++;
+            // cerr << "Error: línea con formato incorrecto." << "   " << i << endl;
+            // j++; // lineas que no sirven
             continue;
         }
-
         else
         {
             // Extraer los campos deseados
@@ -156,6 +164,8 @@ int leerpelis(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
             arbol.insertarNodo(id, original_title);
         }
     }
+    // cout << i << endl;
+    // cout << j << endl;
     archivo.close();
     return 0;
 }
