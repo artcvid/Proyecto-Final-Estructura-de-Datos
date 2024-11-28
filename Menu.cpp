@@ -16,6 +16,14 @@ void limpiarPantalla()
 #endif
 }
 
+// --- Función para esperar una tecla ---
+void esperarTecla()
+{
+    cout << "\nPresione ENTER para continuar...";
+    cin.ignore(); // Limpiar buffer previo
+    cin.get();    // Esperar entrada del usuario
+}
+
 // --- Menú de Usuario ---
 void menu()
 {
@@ -55,14 +63,14 @@ void menu()
             {
                 cout << "Pelicula no encontrada.\n";
             }
-            system("pause"); // Pausar antes de limpiar nuevamente
+            esperarTecla(); // Pausa antes de limpiar
             break;
         }
 
         case 2:
         {
             limpiarPantalla();
-            cin.ignore(); // Limpia el buffer de entrada
+            cin.ignore(); // Limpiar buffer de entrada
             string titulo;
             cout << "Ingrese el titulo de la pelicula: ";
             getline(cin, titulo);
@@ -79,7 +87,7 @@ void menu()
             {
                 cout << "Pelicula no encontrada.\n";
             }
-            system("pause");
+            esperarTecla(); // Pausa antes de limpiar
             break;
         }
 
@@ -91,7 +99,7 @@ void menu()
         default:
             limpiarPantalla();
             cout << "Opcion no valida. Intente nuevamente.\n";
-            system("pause");
+            esperarTecla(); // Pausa antes de limpiar
             break;
         }
     }
