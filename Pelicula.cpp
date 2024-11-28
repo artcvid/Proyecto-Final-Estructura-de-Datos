@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -8,6 +9,7 @@ using namespace std;
 class Pelicula
 {
 private:
+    // TODO: Pasar los valores a privado
 public:
     int id;
     string imdb_id;
