@@ -108,13 +108,21 @@ int leerpelis(TablaHash &tabla, ArbolBinarioBusqueda &arbol)
     }
 
     string linea;
+    string concat;
 
     getline(archivo, linea);
+    getline(archivo, concat);
+
     int i = 1;
-    while (getline(archivo, linea))
+    while (getline(archivo, concat))
     {
+        if (concat[0] != 'F')
+        {
+            linea.append(concat);
+        }
         vector<string> campos = dividirLineaCSV(linea, ',');
-        stringstream stream(linea);
+        getline(archivo, linea);
+        // stringstream stream(linea);
 
         // Verificar que hay suficientes campos para evitar accesos inválidos
         if (campos.size() < 24)
