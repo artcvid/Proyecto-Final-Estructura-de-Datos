@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Hash.cpp"
+#include "Hash.cpp"     
+#include "BusquedaT.cpp" 
 #include <limits>
-#include <ios>
 
 using namespace std;
 
@@ -9,8 +9,7 @@ using namespace std;
 #define __MENU
 
 // --- Función para limpiar la pantalla ---
-void limpiarPantalla()
-{
+void limpiarPantalla() {
 #ifdef _WIN32
     system("cls"); // Windows
 #else
@@ -19,24 +18,24 @@ void limpiarPantalla()
 }
 
 // --- Función para esperar una tecla ---
-void esperarTecla()
-{
+void esperarTecla() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cout << "\nPresione ENTER para continuar...";
     cin.get();
 }
 
 // --- Menú de Usuario ---
-void menu()
-{
+void menu() {
     int opcion;
     TablaHash tabla;
-    ArbolBinarioBusqueda arbol;
 
-    leerPelicula(tabla, arbol); // Cargar datos desde el archivo
+    leerPelicula(tabla); // Cargar datos desde el archivo
 
-    while (true)
-    {
+    int cantidad;
+    TituloID* peliculas = cargarPeliculasDesdeHash(tabla, cantidad);
+    quickSort(peliculas, 0, cantidad - 1); // Ordenar por título
+
+    while (true) {
         limpiarPantalla();
         cout << "--- Menu ---\n";
         cout << "1. Buscar pelicula por ID\n";
@@ -47,65 +46,65 @@ void menu()
         cin >> opcion;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        switch (opcion)
-        {
-        case 1:
-        {
+        switch (opcion) {
+        case 1: {
             limpiarPantalla();
             cout << "Ingrese el ID de la pelicula: ";
             int id;
             cin >> id;
 
-            Pelicula *pelicula = tabla.buscar(id);
+            Pelicula* pelicula = tabla.buscar(id);
             if (pelicula)
                 pelicula->imprimir();
             else
                 cout << "Pelicula no encontrada.\n";
 
             esperarTecla();
-        }
-        case 2:
-        {
-            limpiarPantalla();
-            // cin.ignore(); // Limpiar buffer de entrada
-            string titulo;
-            cout << "Ingrese el titulo de la pelicula: ";
-            getline(cin, titulo);
-            int p = arbol.buscarNodo(titulo);
-            Pelicula *pelicula = tabla.buscar(p);
-
-            if (pelicula)
-                pelicula->imprimir();
-            else
-                cout << "Pelicula no encontrada.\n";
-
-            esperarTecla(); // Pausa antes de limpiar
             break;
         }
-        case 3:
-        {
+        case 2:
+            {
+            limpiarPantalla();
+                cout << "Ingrese el titulo de la pelicula: ";
+                string titulo;
+                getline(cin, titulo);
+                TituloID* resultado = busquedaBinaria(peliculas, cantidad, titulo);  
+                if (resultado) {
+                      Pelicula* pelicula = tabla.buscar(resultado->id);
+                          if (pelicula) {
+                         pelicula->imprimir();  
+                         } else {
+                 cout << "Pelicula no encontrada en la base de datos.\n";
+                      }
+              } else {
+        cout << "Pelicula no encontrada por título.\n";
+    }
+    esperarTecla();  
+    break;
+}
+
+            case 3: {
             int indice;
             cout << "Digite el indice de la pelicula: " << endl;
             cin >> indice;
 
-            Pelicula *pelicula = tabla.buscar(indice);
+            Pelicula* pelicula = tabla.buscar(indice);
             if (pelicula)
                 pelicula->imprimir();
             else
                 cout << "Pelicula no encontrada.\n";
 
+            esperarTecla();
             break;
         }
-        case 4:
-        {
 
+        case 4: {
+            delete[] peliculas; // Liberar memoria dinámica
             limpiarPantalla();
             cout << "Saliendo del programa...\n";
             return; // Salir del menú
-            break;
         }
-        default:
-        {
+        default: {
             limpiarPantalla();
             cout << "Opcion no valida. Intente nuevamente.\n";
             esperarTecla(); // Pausa antes de limpiar
