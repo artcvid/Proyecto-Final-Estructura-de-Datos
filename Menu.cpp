@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Hash.cpp"     
-#include "BusquedaT.cpp" 
+#include "Hash.cpp"
+#include "BusquedaT.cpp"
 #include <limits>
 
 using namespace std;
@@ -9,7 +9,8 @@ using namespace std;
 #define __MENU
 
 // --- Función para limpiar la pantalla ---
-void limpiarPantalla() {
+void limpiarPantalla()
+{
 #ifdef _WIN32
     system("cls"); // Windows
 #else
@@ -18,24 +19,28 @@ void limpiarPantalla() {
 }
 
 // --- Función para esperar una tecla ---
-void esperarTecla() {
+void esperarTecla()
+{
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cout << "\nPresione ENTER para continuar...";
     cin.get();
 }
 
 // --- Menú de Usuario ---
-void menu() {
+void menu()
+{
     int opcion;
     TablaHash tabla;
 
     leerPelicula(tabla); // Cargar datos desde el archivo
 
     int cantidad;
-    TituloID* peliculas = cargarPeliculasDesdeHash(tabla, cantidad);
+    TituloID *peliculas = cargarPeliculasDesdeHash(tabla, cantidad);
+    // TituloID *peliculas = cargarPeliculasDesdeHash(tabla);
     quickSort(peliculas, 0, cantidad - 1); // Ordenar por título
 
-    while (true) {
+    while (true)
+    {
         limpiarPantalla();
         cout << "--- Menu ---\n";
         cout << "1. Buscar pelicula por ID\n";
@@ -46,14 +51,16 @@ void menu() {
         cin >> opcion;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        switch (opcion) {
-        case 1: {
+        switch (opcion)
+        {
+        case 1:
+        {
             limpiarPantalla();
             cout << "Ingrese el ID de la pelicula: ";
             int id;
             cin >> id;
-
-            Pelicula* pelicula = tabla.buscar(id);
+            limpiarPantalla();
+            Pelicula *pelicula = tabla.buscar(id);
             if (pelicula)
                 pelicula->imprimir();
             else
@@ -63,32 +70,37 @@ void menu() {
             break;
         }
         case 2:
-            {
+        {
             limpiarPantalla();
-                cout << "Ingrese el titulo de la pelicula: ";
-                string titulo;
-                getline(cin, titulo);
-                TituloID* resultado = busquedaBinaria(peliculas, cantidad, titulo);  
-                if (resultado) {
-                      Pelicula* pelicula = tabla.buscar(resultado->id);
-                          if (pelicula) {
-                         pelicula->imprimir();  
-                         } else {
-                 cout << "Pelicula no encontrada en la base de datos.\n";
-                      }
-              } else {
-        cout << "Pelicula no encontrada por título.\n";
-    }
-    esperarTecla();  
-    break;
-}
+            cout << "Ingrese el titulo de la pelicula: ";
+            string titulo;
+            getline(cin, titulo);
+            TituloID *resultado = busquedaBinaria(peliculas, cantidad, titulo);
+            limpiarPantalla();
+            if (resultado)
+            {
+                Pelicula *pelicula = tabla.buscar(resultado->id);
+                if (pelicula)
+                    pelicula->imprimir();
+                else
+                    cout << "Pelicula no encontrada en la base de datos.\n";
+            }
+            else
+            {
+                cout << "Pelicula no encontrada por título.\n";
+            }
+            esperarTecla();
+            break;
+        }
 
-            case 3: {
+        case 3:
+        {
+            limpiarPantalla();
             int indice;
             cout << "Digite el indice de la pelicula: " << endl;
             cin >> indice;
-
-            Pelicula* pelicula = tabla.buscar(indice);
+            limpiarPantalla();
+            Pelicula *pelicula = tabla.buscar(indice);
             if (pelicula)
                 pelicula->imprimir();
             else
@@ -98,13 +110,15 @@ void menu() {
             break;
         }
 
-        case 4: {
+        case 4:
+        {
             delete[] peliculas; // Liberar memoria dinámica
             limpiarPantalla();
             cout << "Saliendo del programa...\n";
             return; // Salir del menú
         }
-        default: {
+        default:
+        {
             limpiarPantalla();
             cout << "Opcion no valida. Intente nuevamente.\n";
             esperarTecla(); // Pausa antes de limpiar
